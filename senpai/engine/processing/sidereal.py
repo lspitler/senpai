@@ -172,7 +172,10 @@ def process_astrometry_fits_sidereal(
         wcs_starfield.fwhm_stats = fwhm_stats
 
     detection_metadata = DetectionMetadata(
-        pixel_fwhm=median_fwhm, fwhm_stats=fwhm_stats
+        pixel_fwhm=median_fwhm,
+        fwhm_stats=fwhm_stats,
+        pixel_hfr=sources.hfr,
+        n_hfr_measurements=sources.n_hfr,
     )
 
     wcs_starfield.detection_metadata = detection_metadata
