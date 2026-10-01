@@ -64,8 +64,13 @@ def process_astrometry_fits_sidereal(
     config = get_config()
     pipeline_mode = pipeline_mode or config.astrometry.pipeline_mode
 
+    # The half-flux radius is a focus-sweep metric: always measured in 'detect' mode (which is
+    # what an autofocus sweep requests per frame), otherwise only when detection.measure_hfr opts
+    # in, so science runs don't pay its extra segmentation pass.
     sources, initial_fwhm = extract_point_sources(
-        fits_image, max_detections=config.astrometry.max_sources
+        fits_image,
+        max_detections=config.astrometry.max_sources,
+        measure_hfr=pipeline_mode == "detect" or config.detection.measure_hfr,
     )
 
     boresight_ra_degrees, boresight_dec_degrees = extract_boresight_from_header(
